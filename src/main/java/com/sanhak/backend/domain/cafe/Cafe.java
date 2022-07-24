@@ -18,4 +18,9 @@ public class Cafe {
     private String cafeName;
     @Column(name = "category_name")
     private String categoryName;
+
+    public Cafe(String cafeName, String categoryName) {
+        this.cafeName = cafeName;
+        this.categoryName = categoryName;
+    }
 }

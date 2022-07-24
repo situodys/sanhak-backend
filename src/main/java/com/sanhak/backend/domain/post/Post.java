@@ -37,6 +37,6 @@ public class Post {
 
     private Double similarity;
 
-    @OneToMany(mappedBy = "post")
+    @OneToMany(mappedBy = "post", fetch = FetchType.LAZY)
     private List<Comment> comment = new ArrayList<>();
 }
