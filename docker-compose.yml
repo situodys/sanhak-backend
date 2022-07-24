@@ -1,0 +1,20 @@
+version: '3.9'
+services:
+  mysql:
+    container_name: sh_db
+    image: mysql
+    restart: always
+    environment:
+      MYSQL_ROOT_PASSWORD: rhleh2160
+      MYSQL_DATABASE: dashboard
+      TZ: Asia/Seoul
+
+    platform: linux/amd64
+    ports:
+      - "3306:3306"
+    networks:
+      - dashboard-mysql
+
+networks:
+  dashboard-mysql:
+    driver: bridge
