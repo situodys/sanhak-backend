@@ -7,6 +7,5 @@ import org.springframework.stereotype.Repository;
 
 @Repository
 public interface CafeRepository extends JpaRepository<Cafe, Long> {
-
-    void removeByCafeNameAndCategoryName(String cafeName, String categoryName);
+    void removeById(Long id);
 }
