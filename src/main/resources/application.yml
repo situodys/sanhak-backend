@@ -2,6 +2,10 @@ server:
   port: 8082
 
 spring:
+  mvc:
+    pathmatch:
+      matching-strategy: ant_path_matcher
+
   datasource:
     username: root
     password: rhleh2160
@@ -11,5 +15,3 @@ spring:
   jpa:
     hibernate:
       ddl-auto: validate
-
-
