@@ -1,15 +1,13 @@
 package com.sanhak.backend.domain.cafe.dto;
 
 
-import lombok.Getter;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 
-@Getter
+@Data
+@NoArgsConstructor
 public class CafeDTO {
+    private Long id;
     private String cafeName;
     private String categoryName;
-
-    public CafeDTO(String cafeName, String categoryName) {
-        this.cafeName = cafeName;
-        this.categoryName = categoryName;
-    }
 }
