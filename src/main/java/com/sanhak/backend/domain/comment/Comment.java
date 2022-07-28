@@ -1,4 +1,4 @@
-package com.sanhak.backend.domain.commnet;
+package com.sanhak.backend.domain.comment;
 
 import com.sanhak.backend.domain.post.Post;
 import lombok.Getter;
@@ -21,4 +21,9 @@ public class Comment {
     @ManyToOne
     @JoinColumn(name = "post_id")
     private Post post;
+
+    public Comment(String content, Post post) {
+        this.content = content;
+        this.post = post;
+    }
 }

@@ -5,6 +5,8 @@ import com.sanhak.backend.domain.cafe.Cafe;
 import com.sanhak.backend.domain.cafe.dto.CafeDTO;
 import com.sanhak.backend.domain.cafe.repository.CafeRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -15,13 +17,17 @@ public class CafeService {
 
     private final CafeRepository cafeRepository;
 
-
-    public void add(CafeDTO dto){
+    public Long add(CafeDTO dto){
         Cafe newCafe = new Cafe(dto.getCafeName(), dto.getCategoryName());
-        cafeRepository.save(newCafe);
+        return cafeRepository.save(newCafe).getId();
     }
 
-    public void sub(CafeDTO dto) {
-        cafeRepository.removeByCafeNameAndCategoryName(dto.getCafeName(), dto.getCategoryName());
+    public Long sub(Long id) {
+        cafeRepository.removeById(id);
+        return id;
+    }
+
+    public Page<Cafe> listByPagination(Pageable pageable) {
+        return cafeRepository.findAll(pageable);
     }
 }

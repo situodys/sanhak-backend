@@ -3,10 +3,10 @@ package com.sanhak.backend.domain.cafe.controller;
 import com.sanhak.backend.domain.cafe.dto.CafeDTO;
 import com.sanhak.backend.domain.cafe.service.CafeService;
 import lombok.RequiredArgsConstructor;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.modelmapper.ModelMapper;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.web.bind.annotation.*;
 
 @RequestMapping("/api/cafe")
 @RestController
@@ -14,16 +14,22 @@ import org.springframework.web.bind.annotation.RestController;
 public class CafeController {
 
     private final CafeService cafeService;
+    private final ModelMapper modelMapper;
 
-    @PostMapping("/add")
-    public String add(@RequestBody CafeDTO dto){
-        cafeService.add(dto);
-        return "success : add new cafe";
+    @GetMapping("/")
+    public Page<CafeDTO> listByPagination(final Pageable pageable){
+        return cafeService
+                .listByPagination(pageable)
+                .map(cafe-> modelMapper.map(cafe, CafeDTO.class));
     }
 
-    @PostMapping("/sub")
-    public String sub(@RequestBody CafeDTO dto){
-        cafeService.sub(dto);
-        return "success : sub origin cafe";
+    @PostMapping("/add")
+    public Long add(@RequestBody CafeDTO dto){
+        return cafeService.add(dto);
+    }
+
+    @PostMapping("/sub/{id}")
+    public Long sub(@PathVariable("id")Long id){
+        return cafeService.sub(id);
     }
 }
