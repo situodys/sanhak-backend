@@ -1,3 +1,4 @@
+-- post 테이블 더미 데이터
 DELIMITER $$
 DROP PROCEDURE IF EXISTS loopInsert$$
 
@@ -17,6 +18,7 @@ CALL loopInsert;
 DELIMITER $$
 DROP PROCEDURE IF EXISTS loopInsert2$$
 
+-- comment 테이블 더미 데이터
 CREATE PROCEDURE loopInsert2()
 BEGIN
     DECLARE i INT DEFAULT 1;
@@ -36,3 +38,20 @@ END$$
 DELIMITER $$
 
 CALL loopInsert2;
+
+-- cafe 테이블 더미 데이터
+DELIMITER $$
+DROP PROCEDURE IF EXISTS loopInsert3$$
+
+CREATE PROCEDURE loopInsert3()
+BEGIN
+    DECLARE i INT DEFAULT 1;
+
+    WHILE i <= 500 DO
+        INSERT INTO cafe(cafe_id, cafe_name, category_name)
+          VALUES(i, concat('카페', i), concat('카테고리', i));
+        SET i = i + 1;
+    END WHILE;
+END$$
+DELIMITER $$
+CALL loopInsert3;
