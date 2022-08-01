@@ -2,9 +2,7 @@ package com.sanhak.backend.domain.post;
 
 
 import com.sanhak.backend.domain.comment.Comment;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.ToString;
+import lombok.*;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
@@ -13,7 +11,7 @@ import java.util.List;
 
 @Getter
 @Entity
-@NoArgsConstructor
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Table(name = "post")
 @ToString(exclude = "comment")
 public class Post {
@@ -41,4 +39,18 @@ public class Post {
 
     @OneToMany(mappedBy = "post", fetch = FetchType.LAZY)
     private List<Comment> comment = new ArrayList<>();
+
+    @Builder
+    public Post(Long id, String cafeName, String categoryName, String title, String author, String content, LocalDateTime registerAt, String link, Double similarity, List<Comment> comment) {
+        this.id = id;
+        this.cafeName = cafeName;
+        this.categoryName = categoryName;
+        this.title = title;
+        this.author = author;
+        this.content = content;
+        this.registerAt = registerAt;
+        this.link = link;
+        this.similarity = similarity;
+        this.comment = comment;
+    }
 }
