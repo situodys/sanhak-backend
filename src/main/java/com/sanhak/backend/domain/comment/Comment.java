@@ -3,6 +3,7 @@ package com.sanhak.backend.domain.comment;
 import com.sanhak.backend.domain.post.Post;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.ToString;
 
 import javax.persistence.*;
 
@@ -10,6 +11,7 @@ import javax.persistence.*;
 @Entity
 @NoArgsConstructor
 @Table(name = "comment")
+@ToString(exclude = "post")
 public class Comment {
 
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)

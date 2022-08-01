@@ -4,6 +4,8 @@ package com.sanhak.backend.domain.post;
 import com.sanhak.backend.domain.comment.Comment;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.ToString;
+
 import javax.persistence.*;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
@@ -13,6 +15,7 @@ import java.util.List;
 @Entity
 @NoArgsConstructor
 @Table(name = "post")
+@ToString(exclude = "comment")
 public class Post {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
