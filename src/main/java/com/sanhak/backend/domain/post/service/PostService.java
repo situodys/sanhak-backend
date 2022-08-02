@@ -11,7 +11,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 @Service
-@Transactional
+@Transactional(readOnly = true)
 @RequiredArgsConstructor
 public class PostService {
     private final PostRepository postRepository;
@@ -25,11 +25,12 @@ public class PostService {
 
     public PostDTO findById(Long id) {
         Post post = postRepository
-                .findByPostId(id)
+                .findById(id)
                 .orElseThrow(() -> new IllegalArgumentException("해당하는 post가 없습니다."));
         return modelMapper.map(post, PostDTO.class);
     }
 
+    @Transactional
     public void removeById(Long id) {
         postRepository.removeById(id);
     }
