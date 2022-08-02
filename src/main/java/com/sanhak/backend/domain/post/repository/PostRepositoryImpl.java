@@ -1,25 +1,34 @@
 package com.sanhak.backend.domain.post.repository;
 
+import com.querydsl.jpa.impl.JPAQueryFactory;
 import com.sanhak.backend.domain.post.Post;
 import lombok.RequiredArgsConstructor;
-import org.springframework.data.domain.Pageable;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
-import javax.persistence.EntityManager;
 import java.util.List;
 import java.util.Optional;
 
+import static com.sanhak.backend.domain.comment.QComment.comment;
+import static com.sanhak.backend.domain.post.QPost.post;
+
+
 @Repository
-@RequiredArgsConstructor
 public class PostRepositoryImpl implements PostRepositoryCustom{
 
-    private final EntityManager em;
+    @Autowired
+    private JPAQueryFactory jpaQueryFactory;
 
-    public Optional<Post> findByPostId(Long id){
-        //querydsl 로 다시 구현해야한다.
-        Post post = em.createQuery("select p from Post p join fetch p.comment where p.id=:id", Post.class)
-                .setParameter("id", id)
-                .getSingleResult();
-        return Optional.ofNullable(post);
+    @Override
+    public Optional<Post> findPostDetailByPostId(Long id){
+
+        Post result= jpaQueryFactory.select(post)
+                .from(post)
+                .leftJoin(post.comment,comment)
+                .fetchJoin()
+                .where(post.id.eq(id))
+                .fetchOne();
+
+        return Optional.ofNullable(result);
     }
 }

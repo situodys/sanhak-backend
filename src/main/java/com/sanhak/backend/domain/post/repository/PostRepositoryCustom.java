@@ -5,5 +5,5 @@ import com.sanhak.backend.domain.post.Post;
 import java.util.Optional;
 
 public interface PostRepositoryCustom {
-    Optional<Post> findByPostId(Long id);
+    Optional<Post> findPostDetailByPostId(Long id);
 }

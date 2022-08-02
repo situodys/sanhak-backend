@@ -1,15 +1,15 @@
 package com.sanhak.backend.domain.comment;
 
 import com.sanhak.backend.domain.post.Post;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 import javax.persistence.*;
 
 @Getter
 @Entity
-@NoArgsConstructor
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Table(name = "comment")
+@ToString(exclude = "post")
 public class Comment {
 
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -23,6 +23,13 @@ public class Comment {
     private Post post;
 
     public Comment(String content, Post post) {
+        this.content = content;
+        this.post = post;
+    }
+
+    @Builder
+    public Comment(Long id, String content, Post post) {
+        this.id = id;
         this.content = content;
         this.post = post;
     }
