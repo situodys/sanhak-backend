@@ -2,6 +2,9 @@ server:
   port: 8080
 
 spring:
+  profiles:
+    default: dev
+
   mvc:
     pathmatch:
       matching-strategy: ant_path_matcher
@@ -19,3 +22,24 @@ spring:
     properties:
       hibernate.format_sql: true
       database: mysql
+
+---
+
+spring:
+  config:
+    activate:
+      on-profile: test
+
+  datasource:
+    url: jdbc:h2:mem:test
+    username: sa
+    password:
+    driver-class-name: org.h2.Driver
+
+  jpa:
+    hibernate:
+      ddl-auto: create
+    properties:
+      hibernate:
+        show_sql: true
+        format_sql: true
