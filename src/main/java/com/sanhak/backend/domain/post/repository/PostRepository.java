@@ -8,6 +8,5 @@ import java.util.Optional;
 
 public interface PostRepository extends JpaRepository<Post, Long>, PostRepositoryCustom {
     Page<Post> findAll(Pageable pageable);
-    Optional<Post> findById(Long id);
     void removeById(Long id);
 }
