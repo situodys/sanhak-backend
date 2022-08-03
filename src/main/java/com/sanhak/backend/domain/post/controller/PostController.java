@@ -1,6 +1,7 @@
 package com.sanhak.backend.domain.post.controller;
 
 import com.sanhak.backend.domain.post.dto.PostDTO;
+import com.sanhak.backend.domain.post.dto.PostDetailDTO;
 import com.sanhak.backend.domain.post.service.PostService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
@@ -24,8 +25,8 @@ public class PostController {
     }
 
     @GetMapping("/detail/{id}")
-    public PostDTO findById(@PathVariable("id") Long id){
-        return postService.findById(id);
+    public PostDetailDTO findById(@PathVariable("id") Long id){
+        return postService.findPostDetailByPostId(id);
     }
 
     @GetMapping("/detail/remove/{id}")
