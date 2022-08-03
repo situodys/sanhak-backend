@@ -22,14 +22,8 @@ public class Comment {
     @JoinColumn(name = "post_id")
     private Post post;
 
-    public Comment(String content, Post post) {
-        this.content = content;
-        this.post = post;
-    }
-
     @Builder
-    public Comment(Long id, String content, Post post) {
-        this.id = id;
+    public Comment(String content, Post post) {
         this.content = content;
         this.post = post;
     }

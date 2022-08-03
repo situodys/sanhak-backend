@@ -42,27 +42,31 @@ class CafeControllerTest {
     }
 
     @Test
-    @DisplayName("Cafe Pagination : Cafe Pagination 테스트")
+    @DisplayName("Cafe Pagination : 카페를 하나 추가하고 다시 삭제를 했을 때 정상적으로 추가 삭제가 되는가")
     void test2() throws Exception{
         //given
-        PageRequest req = PageRequest.of(0, 10);
+        int page = 0;
+        int size = 20;
+
         CafeDTO dto = new CafeDTO();
         dto.setCafeName("hello");
         dto.setCategoryName("world");
 
-        //when
-        Page<CafeDTO> cafePage = cafeController.listByPagination(req);
+        //페이지 확인
+        Page<CafeDTO> cafeDTOPage = cafeController.listByPagination(page, size);
+        long previousTotalElement =  cafeDTOPage.getTotalElements();
 
+        //추가
+        Long savedId = cafeController.add(dto);
+        cafeDTOPage = cafeController.listByPagination(page, size);
 
-        //then
-        assertThat(cafePage.getTotalElements()).isEqualTo(0L);
-        assertThat(cafePage.getTotalPages()).isEqualTo(0L);
+        assertThat(cafeDTOPage.getTotalElements()).isEqualTo(previousTotalElement + 1L);
 
-        Long savedId = cafeController.add(dto);// cafe add
+        //삭제
+        Long removedId = cafeController.sub(savedId);
+        cafeDTOPage = cafeController.listByPagination(page, size);
+        assertThat(cafeDTOPage.getTotalElements()).isEqualTo(previousTotalElement);
 
-        cafePage = cafeController.listByPagination(req);
-
-        assertThat(cafePage.getTotalElements()).isEqualTo(1L);
-        assertThat(cafePage.getTotalPages()).isEqualTo(1L);
+        assertThat(savedId).isEqualTo(removedId);// 추가된 카페와 삭제된 카페 아이디가 같아야한다.
     }
 }
