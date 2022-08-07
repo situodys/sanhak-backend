@@ -18,10 +18,11 @@ public class PostController {
     @GetMapping("/")
     public Page<PostDTO> findByPagination(
             @RequestParam(value = "page", defaultValue = "0") Integer page,
-            @RequestParam(value = "size", defaultValue = "10") Integer size
+            @RequestParam(value = "size", defaultValue = "10") Integer size,
+            @RequestParam(value = "title", defaultValue = "") String title
     ) {
         PageRequest pr = PageRequest.of(page, size);
-        return postService.findByPagination(pr);
+        return postService.findByPagination(pr, title);
     }
 
     @GetMapping("/detail/{id}")

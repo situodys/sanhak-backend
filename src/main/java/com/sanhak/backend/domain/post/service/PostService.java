@@ -18,9 +18,9 @@ public class PostService {
     private final PostRepository postRepository;
     private final ModelMapper modelMapper;
 
-    public Page<PostDTO> findByPagination(Pageable pageable) {
+    public Page<PostDTO> findByPagination(Pageable pageable, String title) {
         return postRepository
-                .findAll(pageable)
+                .findByPaginationWithQuerydsl(pageable, title + "%")
                 .map(post -> modelMapper.map(post, PostDTO.class));
     }
 
