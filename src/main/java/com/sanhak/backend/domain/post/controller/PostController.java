@@ -2,10 +2,12 @@ package com.sanhak.backend.domain.post.controller;
 
 import com.sanhak.backend.domain.post.dto.PostDTO;
 import com.sanhak.backend.domain.post.dto.PostDetailDTO;
+import com.sanhak.backend.domain.post.dto.PostSearch;
 import com.sanhak.backend.domain.post.service.PostService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
@@ -17,12 +19,10 @@ public class PostController {
 
     @GetMapping("/")
     public Page<PostDTO> findByPagination(
-            @RequestParam(value = "page", defaultValue = "0") Integer page,
-            @RequestParam(value = "size", defaultValue = "10") Integer size,
-            @RequestParam(value = "title", defaultValue = "") String title
+            @Validated @RequestBody
+            PostSearch postSearch
     ) {
-        PageRequest pr = PageRequest.of(page, size);
-        return postService.findByPagination(pr, title);
+        return postService.findByPagination(postSearch);
     }
 
     @GetMapping("/detail/{id}")
