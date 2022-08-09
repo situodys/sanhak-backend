@@ -1,5 +1,6 @@
 package com.sanhak.backend.domain.post.dto;
 
+import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
@@ -50,4 +51,14 @@ public class PostSearch {
         return content + "%";
     }
 
+    @Builder
+    public PostSearch(Integer page, Integer size, String cafeName, String categoryName, String title, String author, LocalDateTime registerAt) {
+        this.page = page;
+        this.size = size;
+        this.cafeName = cafeName;
+        this.categoryName = categoryName;
+        this.title = title;
+        this.author = author;
+        this.registerAt = registerAt;
+    }
 }
