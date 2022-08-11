@@ -3,6 +3,7 @@ package com.sanhak.backend.domain.post.service;
 import com.sanhak.backend.domain.post.Post;
 import com.sanhak.backend.domain.post.dto.PostDTO;
 import com.sanhak.backend.domain.post.dto.PostDetailDTO;
+import com.sanhak.backend.domain.post.dto.PostSearch;
 import com.sanhak.backend.domain.post.repository.PostRepository;
 import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
@@ -18,9 +19,9 @@ public class PostService {
     private final PostRepository postRepository;
     private final ModelMapper modelMapper;
 
-    public Page<PostDTO> findByPagination(Pageable pageable) {
+    public Page<PostDTO> findByPagination(PostSearch postSearch) {
         return postRepository
-                .findAll(pageable)
+                .findByPaginationWithQuerydsl(postSearch)
                 .map(post -> modelMapper.map(post, PostDTO.class));
     }
 

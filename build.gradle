@@ -54,6 +54,9 @@ dependencies {
 
     // log4j2
     implementation 'org.springframework.boot:spring-boot-starter-log4j2'
+
+    // validation
+    implementation 'org.springframework.boot:spring-boot-starter-validation'
 }
 
 def querydslDir = "$buildDir/generated/querydsl"
