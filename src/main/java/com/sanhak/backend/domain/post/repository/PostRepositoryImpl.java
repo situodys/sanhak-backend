@@ -15,7 +15,6 @@ import org.springframework.stereotype.Repository;
 
 import java.util.List;
 import java.util.Optional;
-
 import static com.sanhak.backend.domain.comment.QComment.comment;
 import static com.sanhak.backend.domain.post.QPost.post;
 

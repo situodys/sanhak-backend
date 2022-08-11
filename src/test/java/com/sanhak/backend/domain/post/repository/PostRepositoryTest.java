@@ -3,19 +3,24 @@ package com.sanhak.backend.domain.post.repository;
 import com.sanhak.backend.domain.comment.Comment;
 import com.sanhak.backend.domain.comment.repository.CommentRepository;
 import com.sanhak.backend.domain.post.Post;
+
 import com.sanhak.backend.domain.post.dto.PostSearch;
 import com.sanhak.backend.global.QuerydslConfig;
 import org.junit.jupiter.api.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.context.annotation.Import;
+
 import org.springframework.data.domain.Page;
+
 import org.springframework.test.context.ActiveProfiles;
 
 import java.time.LocalDateTime;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.IntStream;
+import java.util.stream.LongStream;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
@@ -31,29 +36,33 @@ class PostRepositoryTest {
 
     @BeforeAll
     public void init() {
-        Post post = Post.builder()
-                .id(1L)
-                .cafeName("cafe1")
-                .categoryName("category1")
-                .title("title1")
-                .author("author1")
-                .content("content1")
-                .link("link1")
-                .similarity(0.1)
-                .registerAt(LocalDateTime.of(2022, 1, 1, 11, 11))
-                .build();
+        LongStream.rangeClosed(1, 25)
+                .forEach(id -> {
+                    Post post = Post.builder()
+                            .cafeName("cafe" + id)
+                            .categoryName("category" + id)
+                            .title("title" + id)
+                            .author("author" + id)
+                            .content("content" + id)
+                            .link("link" + id)
+                            .similarity(0.1)
+                            .registerAt(LocalDateTime.of(2022, 1, 1, 11, 11))
+                            .build();
+                    postRepository.save(post);
+                });
 
-        postRepository.save(post);
+        Long postId = 1L;
 
         IntStream.rangeClosed(1, 5)
                 .forEach(i -> {
                     Comment comment = Comment.builder()
-                            .content("content.." + i)
-                            .post(Post.builder().id(1L).build())
+                            .content("reply.." + i)
+                            .post(Post.builder().id(postId).build())
                             .build();
                     commentRepository.save(comment);
                 });
     }
+
 
     @Test
     @DisplayName("postId로 검색_해당 포스트가 있는 경우")
@@ -67,7 +76,7 @@ class PostRepositoryTest {
         List<Comment> comments = post.getComment();
         for (int i = 0; i < comments.size(); i++) {
             assertThat(comments.get(i).getId()).isEqualTo(i + 1);
-            assertThat(comments.get(i).getContent()).isEqualTo("content.." + (i + 1));
+            assertThat(comments.get(i).getContent()).isEqualTo("reply.." + (i + 1));
         }
     }
 
@@ -84,7 +93,7 @@ class PostRepositoryTest {
 
     @Test
     @DisplayName("pagination : 여러 파라미터를 이용해서 검색을 해도 괜찮은지 검증")
-    void findByPaginationAndSearch() throws Exception {
+            void findByPaginationAndSearch() throws Exception {
         //given
         String cafeName = "cafe1";
         String categoryName = "category1";
@@ -99,17 +108,25 @@ class PostRepositoryTest {
                 .title(title).build();
         PostSearch postSearchJustAuthor = PostSearch.builder()
                 .author(author).build();
+        PostSearch defaultPostSearch = PostSearch.builder().build();
 
         //when
+        Page<Post> resultByDefault = postRepository.findByPaginationWithQuerydsl(defaultPostSearch);
         Page<Post> resultByCafeName = postRepository.findByPaginationWithQuerydsl(postSearchJustCafeName);
         Page<Post> resultByCategoryName = postRepository.findByPaginationWithQuerydsl(postSearchJustCategoryName);
         Page<Post> resultByTitle = postRepository.findByPaginationWithQuerydsl(postSearchJustTitle);
         Page<Post> resultByAuthor = postRepository.findByPaginationWithQuerydsl(postSearchJustAuthor);
 
         //then
-        assertThat(resultByCafeName.getTotalElements()).isEqualTo(1L);
-        assertThat(resultByCategoryName.getTotalElements()).isEqualTo(1L);
-        assertThat(resultByTitle.getTotalElements()).isEqualTo(1L);
-        assertThat(resultByAuthor.getTotalElements()).isEqualTo(1L);
+        for (Post post : resultByDefault) {
+            System.out.println(post);
+        }
+        assertThat(resultByDefault.getTotalElements()).isEqualTo(25L);
+        assertThat(resultByDefault.getTotalPages()).isEqualTo(3);
+        assertThat(resultByCafeName.getTotalElements()).isEqualTo(11L);
+        assertThat(resultByCategoryName.getTotalElements()).isEqualTo(11L);
+        assertThat(resultByTitle.getTotalElements()).isEqualTo(11L);
+        assertThat(resultByAuthor.getTotalElements()).isEqualTo(11L);
+
     }
 }
